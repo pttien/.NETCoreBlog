@@ -5,20 +5,20 @@
 <form asp-controller="Account" asp-action="Register" method="post">
     <div asp-validation-summary="All"></div>
 
-    <requiredlabel asp-for="UserName" highlight-class="red-bold"></requiredlabel>
-    <input type="text" asp-for="UserName" placeholder="Username" />
+    <requiredlabel asp-for="UserName" highlight-class="text-danger font-weight-bold"></requiredlabel>
+    <input type="text" class="form-control form-control form-control-top" asp-for="UserName" placeholder="Username" />
     <br />
 
-    <requiredlabel asp-for="Password" highlight-class="red-bold"></requiredlabel>
-    <input type="password" asp-for="Password" placeholder="Password" />
+    <requiredlabel asp-for="Password" highlight-class="text-danger font-weight-bold"></requiredlabel>
+    <input type="password" class="form-control form-control form-control-static" asp-for="Password" placeholder="Password" />
     <br />
 
-    <requiredlabel asp-for="ConfirmPassword" highlight-class="red-bold"></requiredlabel>
-    <input type="password" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+    <requiredlabel asp-for="ConfirmPassword" highlight-class="text-danger font-weight-bold"></requiredlabel>
+    <input type="password" class="form-control form-control form-control-static" asp-for="ConfirmPassword" placeholder="Confirm Password" />
     <br />
 
-    <requiredlabel asp-for="Email" highlight-class="red-bold"></requiredlabel>
-    <input type="text" asp-for="Email" placeholder="Email" />
+    <requiredlabel asp-for="Email" highlight-class="text-danger font-weight-bold"></requiredlabel>
+    <input type="text"  class="form-control form-control form-control-bottom" asp-for="Email" placeholder="Email" />
     <br />
-    <input type="submit" value="Register" />
+    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" />
 </form>

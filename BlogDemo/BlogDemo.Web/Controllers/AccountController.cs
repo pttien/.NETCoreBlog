@@ -33,6 +33,7 @@ namespace BlogDemo.Web.Controllers
 
         public IActionResult Login()
         {
+            @ViewBag.Title = "Login";
             return View();
         }
 
@@ -44,7 +45,7 @@ namespace BlogDemo.Web.Controllers
                 return View(model);
             
             var result = await this.signInManager.PasswordSignInAsync(
-                model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
+                model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
                 return RedirectToAction("Index", "Home");
@@ -70,6 +71,7 @@ namespace BlogDemo.Web.Controllers
 
         public IActionResult Register()
         {
+            @ViewBag.Title = "Register";
             return View();
         }
 
