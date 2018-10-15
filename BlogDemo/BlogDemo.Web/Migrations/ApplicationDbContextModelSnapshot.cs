@@ -70,6 +70,38 @@ namespace BlogDemo.Web.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("BlogDemo.Domain.Data.Author", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AppUserId")
+                        .HasMaxLength(160);
+
+                    b.Property<string>("AppUserName")
+                        .HasMaxLength(160);
+
+                    b.Property<string>("Avatar")
+                        .HasMaxLength(160);
+
+                    b.Property<string>("Bio");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(160);
+
+                    b.Property<string>("Email");
+
+                    b.Property<bool>("IsAdmin");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+                });
+
             modelBuilder.Entity("BlogDemo.Domain.Data.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -101,17 +133,38 @@ namespace BlogDemo.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Content");
+                    b.Property<int>("AuthorId");
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<string>("Categories")
+                        .HasMaxLength(2000);
 
-                    b.Property<string>("Image");
+                    b.Property<string>("Content")
+                        .IsRequired();
 
-                    b.Property<int>("PostCategoryId");
+                    b.Property<string>("Cover")
+                        .HasMaxLength(255);
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(450);
 
-                    b.Property<DateTime>("UpdatedDate");
+                    b.Property<bool>("IsFeatured");
+
+                    b.Property<int?>("PostCategoryId");
+
+                    b.Property<int>("PostViews");
+
+                    b.Property<DateTime>("Published");
+
+                    b.Property<double>("Rating");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(160);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(160);
 
                     b.Property<string>("UserId");
 
@@ -130,17 +183,9 @@ namespace BlogDemo.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Title");
-
-                    b.Property<string>("UserId");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PostCategories");
                 });
@@ -271,16 +316,8 @@ namespace BlogDemo.Web.Migrations
                 {
                     b.HasOne("BlogDemo.Domain.Data.PostCategory", "PostCategory")
                         .WithMany("Posts")
-                        .HasForeignKey("PostCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PostCategoryId");
 
-                    b.HasOne("BlogDemo.Domain.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("BlogDemo.Domain.Data.PostCategory", b =>
-                {
                     b.HasOne("BlogDemo.Domain.Data.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

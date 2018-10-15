@@ -48,7 +48,7 @@ namespace BlogDemo.Web.Controllers
                 model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return RedirectToAction("Index", "Home");
+                return Redirect("/Admin/Posts");
 
             ModelState.AddModelError(string.Empty, "Login Failed");
             return View(model);
@@ -57,7 +57,7 @@ namespace BlogDemo.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await this.signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return Redirect("/Admin/Posts");
         }
 
         public IActionResult AccessDenied()
@@ -91,7 +91,7 @@ namespace BlogDemo.Web.Controllers
             var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return Redirect("/Admin/Posts");
             }
 
             return View(model);

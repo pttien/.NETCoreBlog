@@ -5,17 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.15.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="ReverseMarkdown" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BlogDemo.Domain\BlogDemo.Domain.csproj" />
     <ProjectReference Include="..\BlogDemo.Extensions\BlogDemo.Extensions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\" />
+    <ProjectReference Include="..\BlogDemo.Services\BlogDemo.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
