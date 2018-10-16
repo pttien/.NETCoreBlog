@@ -1,31 +1,7 @@
 ﻿@model PostModel
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@Html.Raw(ViewBag.Title)</title>
-    <meta name="description" content="@Html.Raw(ViewBag.Description)">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/styles.min.css" />
-    <link rel="stylesheet" href="~/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="~/css/prism.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="shortcut icon" href="~/lib/img/favicon.ico">
-    <link href="~/css/styles.min.css" rel="stylesheet" asp-append-version="true">
-</head>
-<body class="@ViewData["bodyClass"]">
-    <!--[if lt IE 10]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <header class="blog-header d-flex flex-column">
-        <div class="container d-flex">
-            <button class="blog-search-toggle btn-unstyled" type="button" data-toggle="modal" data-target="#blog-search">
-                <i class="fa fa-search"></i>
-            </button>
-        </div>
-    </header>
+@{ 
+    Layout = "_Layout.cshtml";
+ }
     <article class="post-single">
         <div class="post-cover" style="background-image: url('@ViewBag.Cover')"></div>
         <section class="container">
@@ -79,40 +55,3 @@
             </div>
         </section>
     </article>
-    @{
-        var returnUrl = Url.Action("Index", "Admin");
-    }
-
-    <div class="modal fade blog-search" id="blog-search" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body p-0">
-                    <form role="search" asp-controller="Blog" asp-action="Index" method="post">
-                        <input type="search" id="term" name="term" class="form-control form-control-lg" placeholder="Search..." autocomplete="off">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer class="blog-footer">
-        <div class="container d-lg-flex text-center text-lg-left">
-            <p>Copyright © @DateTime.Now.Year.</p>
-            <div class="ml-auto">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="~/admin/posts">Admin</a>
-                }
-                else
-                {
-                    <a href="~/account/login?ReturnUrl=@returnUrl">Login</a>
-                }
-            </div>
-        </div>
-    </footer>
-    <form method="post" id="frmLogOut" asp-controller="Account" asp-action="Logout" asp-antiforgery="true"></form>
-    <script src="~/lib/jquery.min.js"></script>
-    <script src="~/lib/popper.min.js"></script>
-    <script src="~/lib/bootstrap.min.js"></script>
-</body>
-</html>

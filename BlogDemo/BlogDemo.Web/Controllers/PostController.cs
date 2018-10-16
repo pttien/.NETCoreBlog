@@ -57,7 +57,7 @@ namespace BlogDemo.Web.Controllers
                 ViewBag.Description = "";
                 model.PostListType = PostListType.Search;
             }
-
+            ViewBag.Title = "Home";
             ViewBag.Cover = $"{Url.Content("~/")}{"data/admin/cover-desk.jpg"}";
             return View(model);
         }
@@ -103,6 +103,7 @@ namespace BlogDemo.Web.Controllers
                 Posts = posts,
                 Pager = pager
             };
+            ViewBag.Title = name;
             ViewBag.Cover = $"{Url.Content("~/")}{"data/admin/cover-desk.jpg"}";
             ViewBag.Description = "";
 
@@ -124,6 +125,7 @@ namespace BlogDemo.Web.Controllers
                 Posts = posts,
                 Pager = pager
             };
+            ViewBag.Title = name;
             ViewBag.Category = name;
             ViewBag.Description = "";
             ViewBag.Cover = $"{Url.Content("~/")}{"data/admin/cover-desk.jpg"}";
