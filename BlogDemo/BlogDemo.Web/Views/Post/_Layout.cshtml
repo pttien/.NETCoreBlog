@@ -1,4 +1,4 @@
-﻿
+﻿@inject Blogdemo.Services.IDataService dataService;
 @{
     var returnUrl = Url.Action("Index", "Admin");
 }
@@ -21,12 +21,16 @@
 <body class="@ViewData["bodyClass"]">
 
     <header class="blog-header d-flex flex-column">
-        
+
         <div class="container d-flex">
             <div class="ml-auto pt-3">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a class="text-uppercase text-info text-center" href="~/admin/posts">Admin</a>
+                    var author = await dataService.Authors.GetItem(e => e.AppUserName == User.Identity.Name);
+                    if (author != null)
+                    {
+                        <a class="text-uppercase text-info text-center" href="~/admin/posts">Admin</a>
+                    }
                     <a class=" pl-2 text-uppercase text-primary text-center" href="~/account/logout">Logout</a>
 
                 }
@@ -42,7 +46,7 @@
 
         </div>
     </header>
-   
+
     @RenderBody()
 
 

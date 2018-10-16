@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blogdemo.Services;
 using BlogDemo.Domain.Data;
 using BlogDemo.Web.Models;
 using Microsoft.AspNetCore.Identity;
@@ -15,13 +16,15 @@ namespace BlogDemo.Web.Controllers
         #region " Fields & Constructor "
 
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;        
-
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IDataService dataService;
         public AccountController(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            IDataService dataService
            )
         {
+            this.dataService = dataService;
             this.userManager = userManager;
             this.signInManager = signInManager;
          
@@ -48,7 +51,21 @@ namespace BlogDemo.Web.Controllers
                 model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return Redirect("/Admin/Posts");
+            {
+                var author = await dataService.Authors.GetItem(e => e.AppUserName == model.UserName);
+                if (author != null)
+                {
+                  
+                    return Redirect("/Admin/Posts");
+                }                   
+                else
+                {
+                    ViewData["IsAuthor"] = "false";
+                    return Redirect("/");
+                }
+                    
+            }
+             
 
             ModelState.AddModelError(string.Empty, "Login Failed");
             return View(model);
@@ -91,7 +108,7 @@ namespace BlogDemo.Web.Controllers
             var result = await this.userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Redirect("/Admin/Posts");
+                return Redirect("~/Account/login");
             }
 
             return View(model);

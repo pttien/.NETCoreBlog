@@ -37,7 +37,7 @@ namespace BlogDemo.Web.Pages.Admin.Posts
             var user = await _db.Authors.GetItem(a => a.AppUserName == User.Identity.Name);
             IsAdmin = user.IsAdmin;
 
-            PostItem.Author = await _db.Authors.GetItem(a => a.AppUserName == User.Identity.Name);
+            PostItem.Author = user;
             
 
             if (ModelState.IsValid )
