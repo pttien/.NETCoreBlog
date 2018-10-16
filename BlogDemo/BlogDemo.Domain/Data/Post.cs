@@ -9,7 +9,6 @@ namespace BlogDemo.Domain.Data
     {
         [Key]
         public int Id { get; set; }
-        public int? PostCategoryId { get; set; }
         public string UserId { get; set; }
         public int AuthorId { get; set; }
         [Required]
@@ -28,7 +27,7 @@ namespace BlogDemo.Domain.Data
         [Required]
         public string Content { get; set; }
 
-        [StringLength(2000)]
+
         public string Categories { get; set; }
 
         [StringLength(255)]
@@ -40,7 +39,8 @@ namespace BlogDemo.Domain.Data
         public bool IsFeatured { get; set; }
 
         public DateTime Published { get; set; }
-        public virtual PostCategory PostCategory { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ApplicationUser User { get; set; }
     }
 }

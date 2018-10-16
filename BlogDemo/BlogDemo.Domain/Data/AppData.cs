@@ -34,10 +34,6 @@ namespace BlogDemo.Domain.Data
             });
 
             context.SaveChanges();
-            context.PostCategories.Add(new PostCategory
-            {
-                 
-            });
             var adminId = context.Authors.Single(a => a.AppUserName == "admin").Id;
             var demoId = context.Authors.Single(a => a.AppUserName == "member").Id;
 

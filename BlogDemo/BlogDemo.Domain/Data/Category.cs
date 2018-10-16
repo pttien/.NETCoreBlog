@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace BlogDemo.Domain.Data
 {
-    public class PostCategory
+    public class Category
     {
         [Key]
-        public int Id { get; set; }       
+        public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<Post> Posts { get; set; }      
     }
 }

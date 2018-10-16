@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    var returnUrl = Url.Action("Index", "Admin");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -15,18 +19,33 @@
     <link href="~/css/styles.min.css" rel="stylesheet" asp-append-version="true">
 </head>
 <body class="@ViewData["bodyClass"]">
+
     <header class="blog-header d-flex flex-column">
+        
         <div class="container d-flex">
+            <div class="ml-auto pt-3">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a class="text-uppercase text-info text-center" href="~/admin/posts">Admin</a>
+                    <a class=" pl-2 text-uppercase text-primary text-center" href="~/account/logout">Logout</a>
+
+                }
+                else
+                {
+                    <a class="text-info text-center" href="~/account/login?ReturnUrl=@returnUrl">Login</a>
+                    <a class="pl-2 text-secondary text-center" href="~/account/register">Register</a>
+                }
+            </div>
             <button class="blog-search-toggle btn-unstyled" type="button" data-toggle="modal" data-target="#blog-search">
                 <i class="fa fa-search"></i>
             </button>
+
         </div>
     </header>
+   
     @RenderBody()
 
-    @{
-        var returnUrl = Url.Action("Index", "Admin");
-    }
+
 
     <div class="modal fade blog-search" id="blog-search" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -43,16 +62,6 @@
     <footer class="blog-footer">
         <div class="container d-lg-flex text-center text-lg-left">
             <p>Copyright © @DateTime.Now.Year.</p>
-            <div class="ml-auto">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="~/admin/posts">Admin</a>
-                }
-                else
-                {
-                    <a href="~/account/login?ReturnUrl=@returnUrl">Login</a>
-                }
-            </div>
         </div>
     </footer>
     @*<a href="#" onclick="profileLogOut(); return false;">Logoff</a>

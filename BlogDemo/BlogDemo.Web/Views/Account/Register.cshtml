@@ -1,8 +1,9 @@
 ﻿@model RegisterViewModel
-
-<h3>Register</h3>
-
 <form asp-controller="Account" asp-action="Register" method="post">
+    <div class="bf-account-header">
+        <h1>Welcome!</h1>
+        <p>You can sign up or go <a href="~/">back to blog</a>.</p>
+    </div>
     <div asp-validation-summary="All"></div>
 
     <requiredlabel asp-for="UserName" highlight-class="text-danger font-weight-bold"></requiredlabel>
@@ -18,7 +19,12 @@
     <br />
 
     <requiredlabel asp-for="Email" highlight-class="text-danger font-weight-bold"></requiredlabel>
-    <input type="text"  class="form-control form-control form-control-bottom" asp-for="Email" placeholder="Email" />
+    <input type="text" class="form-control form-control form-control-bottom" asp-for="Email" placeholder="Email" />
     <br />
     <input type="submit" class="btn btn-lg btn-primary btn-block" value="Register" />
+
+    <div class="pt-2 text-center">if you have an account already</div>
+    <div class=" pt-2 text-info text-center">
+        <a href="~/account/login">Sign in Now</a>
+    </div>
 </form>

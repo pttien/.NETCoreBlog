@@ -57,7 +57,7 @@ namespace BlogDemo.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await this.signInManager.SignOutAsync();
-            return Redirect("/Admin/Posts");
+            return Redirect("/");
         }
 
         public IActionResult AccessDenied()
