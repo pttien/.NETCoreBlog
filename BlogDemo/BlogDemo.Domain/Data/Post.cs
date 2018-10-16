@@ -40,6 +40,7 @@ namespace BlogDemo.Domain.Data
 
         public DateTime Published { get; set; }
 
+        public virtual Author Author { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ApplicationUser User { get; set; }
     }

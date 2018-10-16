@@ -31,5 +31,7 @@ namespace BlogDemo.Domain.Data
 
         public bool IsAdmin { get; set; }
         public DateTime Created { get; set; }
+
+        public ICollection<Post> Posts { get; set; }
     }
 }
