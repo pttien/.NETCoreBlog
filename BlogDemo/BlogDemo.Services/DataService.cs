@@ -1,4 +1,5 @@
-﻿using BlogDemo.Domain.Data;
+﻿using AutoMapper;
+using BlogDemo.Domain.Data;
 using BlogDemo.Domain.Repositories;
 using System;
 
@@ -14,12 +15,13 @@ namespace Blogdemo.Services
     public class DataService : IDataService
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public DataService(ApplicationDbContext db)
+        public DataService(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
-
-            Posts = new PostRepository(_db);
+            _mapper = mapper;
+            Posts = new PostRepository(_db, _mapper);
             Authors = new AuthorRepository(db);
         }
 

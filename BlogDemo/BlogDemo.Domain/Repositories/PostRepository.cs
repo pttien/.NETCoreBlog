@@ -1,6 +1,8 @@
-﻿using BlogDemo.Domain.Data;
+﻿using AutoMapper;
+using BlogDemo.Domain.Data;
 using BlogDemo.Domain.Helpers;
 using BlogDemo.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,22 +26,25 @@ namespace BlogDemo.Domain.Repositories
     public class PostRepository : Repository<Post>, IPostRepository
     {
         ApplicationDbContext _db;
-
-        public PostRepository(ApplicationDbContext db) : base(db)
+        private readonly IMapper _mapper;
+        public PostRepository(ApplicationDbContext db, IMapper mapper) : base(db)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<PostItem>> GetList(Expression<Func<Post, bool>> predicate, Pager pager)
         {
             var skip = pager.CurrentPage * pager.ItemsPerPage - pager.ItemsPerPage;
 
-            var drafts = _db.Posts
+            var drafts = _db.Posts.AsNoTracking()
                 .Where(p => p.Published == DateTime.MinValue).Where(predicate)
+                .Include(e=>e.Author)
                 .OrderByDescending(p => p.Published).ToList();
 
-            var pubs = _db.Posts
+            var pubs = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue).Where(predicate)
+                .Include(e => e.Author)
                 .OrderByDescending(p => p.IsFeatured)
                 .ThenByDescending(p => p.Published).ToList();
 
@@ -48,14 +53,14 @@ namespace BlogDemo.Domain.Repositories
 
             var postPage = items.Skip(skip).Take(pager.ItemsPerPage).ToList();
 
-            return await Task.FromResult(PostListToItems(postPage));
+            return await Task.FromResult(_mapper.Map<List<PostItem>>(postPage));
         }
 
         public async Task<IEnumerable<PostItem>> GetListByCategory(string category, Pager pager)
         {
             var skip = pager.CurrentPage * pager.ItemsPerPage - pager.ItemsPerPage;
 
-            var posts = _db.Posts
+            var posts = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue)
                 .OrderByDescending(p => p.Published).ToList();
 
@@ -77,7 +82,7 @@ namespace BlogDemo.Domain.Repositories
 
             var postPage = items.Skip(skip).Take(pager.ItemsPerPage).ToList();
 
-            return await Task.FromResult(PostListToItems(postPage));
+            return await Task.FromResult(_mapper.Map<List<PostItem>>(postPage));
         }
 
         // search always returns only published posts
@@ -90,9 +95,9 @@ namespace BlogDemo.Domain.Repositories
 
             IEnumerable<Post> posts;
             if (user == 0)
-                posts = _db.Posts.Where(p => p.Published > DateTime.MinValue).ToList();
+                posts = _db.Posts.AsNoTracking().Where(p => p.Published > DateTime.MinValue).ToList();
             else
-                posts = _db.Posts.Where(p => p.Published > DateTime.MinValue && p.UserId == user.ToString()).ToList();
+                posts = _db.Posts.AsNoTracking().Where(p => p.Published > DateTime.MinValue && p.UserId == user.ToString()).ToList();
 
             foreach (var item in posts)
             {
@@ -117,7 +122,7 @@ namespace BlogDemo.Domain.Repositories
 
                 if (rank > 0)
                 {
-                    results.Add(new SearchResult { Rank = rank, Item = PostToItem(item) });
+                    results.Add(new SearchResult { Rank = rank, Item = _mapper.Map<PostItem>(item) });
                 }
             }
             results = results.OrderByDescending(r => r.Rank).ToList();
@@ -131,8 +136,8 @@ namespace BlogDemo.Domain.Repositories
 
         public async Task<PostItem> GetItem(Expression<Func<Post, bool>> predicate)
         {
-            var post = _db.Posts.Single(predicate);
-            var item = PostToItem(post);
+            var post = _db.Posts.AsNoTracking().Single(predicate);
+            var item = _mapper.Map<PostItem>(post);
 
             item.Author.Avatar = string.IsNullOrEmpty(item.Author.Avatar) ? "lib/img/avatar.jpg" : item.Author.Avatar;
 
@@ -143,8 +148,9 @@ namespace BlogDemo.Domain.Repositories
         {
             var model = new PostModel();
 
-            var all = _db.Posts
+            var all = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue)
+                .Include(e => e.Author)
                 .OrderByDescending(p => p.IsFeatured)
                 .ThenByDescending(p => p.Published).ToList();
 
@@ -154,16 +160,16 @@ namespace BlogDemo.Domain.Repositories
                 {
                     if(all[i].Slug == slug)
                     {
-                        model.Post = PostToItem(all[i]);
+                        model.Post = _mapper.Map<PostItem>(all[i]);
 
                         if(i > 0)
                         {
-                            model.Newer = PostToItem(all[i - 1]);
+                            model.Newer = _mapper.Map<PostItem>(all[i - 1]);
                         }
 
                         if (i + 1 < all.Count)
                         {
-                            model.Older = PostToItem(all[i + 1]);
+                            model.Older = _mapper.Map<PostItem>(all[i + 1]);
                         }
 
                         break;
@@ -180,23 +186,12 @@ namespace BlogDemo.Domain.Repositories
 
             if(item.Id == 0)
             {
-                post = new Post
-                {
-                    Title = item.Title,
-                    Slug = item.Slug,
-                    Content = item.Content,
-                    Description = item.Description ?? item.Title,
-                    Categories = item.Categories,
-                    Cover = item.Cover,
-                    AuthorId = item.Author.Id,
-                    IsFeatured = item.Featured,
-                    Published = item.Published
-                };
+                post = _mapper.Map<Post>(item);
                 _db.Posts.Add(post);
                 await _db.SaveChangesAsync();
 
                 post = _db.Posts.Single(p => p.Slug == post.Slug);
-                item = PostToItem(post);
+                item = _mapper.Map<PostItem>(post);
             }
             else
             {
@@ -223,50 +218,7 @@ namespace BlogDemo.Domain.Repositories
             item.Cover = asset;
 
             await _db.SaveChangesAsync();
-        }
-
-        PostItem PostToItem(Post p)
-        {
-            var post = new PostItem
-            {
-                Id = p.Id,
-                Slug = p.Slug,
-                Title = p.Title,
-                Description = p.Description,
-                Content = p.Content,
-                Categories = p.Categories,
-                Cover = p.Cover,
-                PostViews = p.PostViews,
-                Rating = p.Rating,
-                Published = p.Published,
-                Featured = p.IsFeatured,
-                Author = _db.Authors.Single(a => a.Id == p.AuthorId)
-            };
-            if(post.Author != null)
-            {
-                post.Author.Avatar = string.IsNullOrEmpty(post.Author.Avatar) ? "lib/img/avatar.jpg" : post.Author.Avatar;
-            }
-            return post;
-        }
-
-        public List<PostItem> PostListToItems(List<Post> posts)
-        {
-            return posts.Select(p => new PostItem
-            {
-                Id = p.Id,
-                Slug = p.Slug,
-                Title = p.Title,
-                Description = p.Description,
-                Content = p.Content,
-                Categories = p.Categories,
-                Cover = p.Cover,
-                PostViews = p.PostViews,
-                Rating = p.Rating,
-                Published = p.Published,
-                Featured = p.IsFeatured,
-                Author = _db.Authors.Single(a => a.Id == p.AuthorId)
-            }).Distinct().ToList();
-        }
+        } 
     }
 
     internal class SearchResult

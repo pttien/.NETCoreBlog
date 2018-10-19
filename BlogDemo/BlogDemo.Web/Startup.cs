@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using Blogdemo.Services;
 using BlogDemo.Domain.Data;
 using Microsoft.AspNetCore.Builder;
@@ -60,6 +61,7 @@ namespace BlogDemo.Web
                     SecurePolicy = CookieSecurePolicy.SameAsRequest
                 };
             });
+            services.AddAutoMapper();
             services.AddMvc();
             services.AddScoped<IDataService, DataService>();
             services.AddScoped<IStorageService, StorageService>();

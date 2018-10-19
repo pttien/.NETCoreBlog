@@ -44,6 +44,8 @@ namespace BlogDemo.Domain.Models
         public Author Author { get; set; }
         public SaveStatus Status { get; set; }
 
+        public List<Comment> Comments { get; set; }
+
         #region IEquatable
         // to be able compare two posts
         // if(post1 == post2) { ... }
