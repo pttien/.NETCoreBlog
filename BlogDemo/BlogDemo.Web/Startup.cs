@@ -26,7 +26,7 @@ namespace BlogDemo.Web
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                   optionsBuilder=> optionsBuilder.MigrationsAssembly("BlogDemo.Web")));
+                   optionsBuilder=> optionsBuilder.MigrationsAssembly("BlogDemo.Web")),ServiceLifetime.Transient);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                    .AddEntityFrameworkStores<ApplicationDbContext>()
