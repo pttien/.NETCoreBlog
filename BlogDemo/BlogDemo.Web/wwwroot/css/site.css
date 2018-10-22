@@ -33,6 +33,30 @@ body {
 .bold{
     font-weight:bold;
 }
+.comment_item {
+    padding: 10px 10px 0 10px;
+    word-wrap: break-word;
+}
+.width_common {
+    width: 100%;
+    float: left;
+}
+.comment_item p {
+    padding-bottom: 2px;
+    font: 300 14px/19px arial;
+}
+.user_status {
+    position: relative;
+}
+.comment_item span.left.txt_666.txt_14 {
+    font-size: 12px;
+    padding: 5px 0 0;
+    white-space: nowrap;
+}
+.comment_item.hight_light {
+    background: #f8f8f8;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

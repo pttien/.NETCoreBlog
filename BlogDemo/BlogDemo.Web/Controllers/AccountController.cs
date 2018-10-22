@@ -36,13 +36,17 @@ namespace BlogDemo.Web.Controllers
 
         public IActionResult Login()
         {
+            if(User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
             @ViewBag.Title = "Login";
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model, [FromQuery] string returnUrl="")
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -52,17 +56,25 @@ namespace BlogDemo.Web.Controllers
 
             if (result.Succeeded)
             {
-                var author = await dataService.Authors.GetItem(e => e.AppUserName == model.UserName);
-                if (author != null)
+               
+                if (Url.IsLocalUrl(returnUrl))
                 {
-                  
-                    return Redirect("/Admin/Posts");
-                }                   
+                    return Redirect(returnUrl);
+                }
                 else
                 {
-                    ViewData["IsAuthor"] = "false";
-                    return Redirect("/");
-                }
+                    var author = await dataService.Authors.GetItem(e => e.AppUserName == model.UserName);
+                    if (author != null)
+                    {
+
+                        return Redirect("/Admin/Posts");
+                    }
+                    else
+                    {
+                        ViewData["IsAuthor"] = "false";
+                        return Redirect("/");
+                    }
+                }                
                     
             }
              

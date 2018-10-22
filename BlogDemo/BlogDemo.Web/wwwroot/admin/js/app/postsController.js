@@ -20,6 +20,21 @@
       dataService.remove("admin/removepost/" + id, callback, fail);
   }
 
+    $('#addComment').on('click', function () {
+        var comment = $('#text1').val();
+        if (comment.length === 0) {
+            $('#text1').addClass("border border-danger");
+        }
+        else {
+            var postId = $("#postId").val();
+            dataService.post('post/addcomment/' + postId + "/" + comment, null, function (data) {
+                $('#comments').html(data);
+            }, fail);
+        }
+    });
+
+
+
   function callback() {
     toastr.success('Updated');
     setTimeout(function () {
@@ -50,3 +65,4 @@ $('.filter-group-title').on('click', function() {
     $(this).parent().toggleClass('active');
   }
 });
+

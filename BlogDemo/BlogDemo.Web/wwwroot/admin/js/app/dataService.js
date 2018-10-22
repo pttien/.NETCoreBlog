@@ -16,12 +16,12 @@ var DataService = function () {
         var options = {
             url: getUrl(url),
             type: "POST",
-            data: JSON.stringify(obj),
+            data: obj,
             contentType: "application/json; charset=utf-8",
             dataType: "html",
             success: done,
             error: fail
-        }
+        };
         $.ajax(options);
     };
     var put = function (url, obj, done, fail) {

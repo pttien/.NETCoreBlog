@@ -21,6 +21,7 @@ namespace BlogDemo.Domain.Repositories
         Task<PostModel> GetModel(string slug);
         Task<PostItem> SaveItem(PostItem item);
         Task SaveCover(int postId, string asset);
+        Task AddCommentToPost(int postId, string comment, string userId);
     }
 
     public class PostRepository : Repository<Post>, IPostRepository
@@ -95,9 +96,9 @@ namespace BlogDemo.Domain.Repositories
 
             IEnumerable<Post> posts;
             if (user == 0)
-                posts = _db.Posts.AsNoTracking().Where(p => p.Published > DateTime.MinValue).ToList();
+                posts = _db.Posts.AsNoTracking().Include(e=>e.Author).Where(p => p.Published > DateTime.MinValue).ToList();
             else
-                posts = _db.Posts.AsNoTracking().Where(p => p.Published > DateTime.MinValue && p.UserId == user.ToString()).ToList();
+                posts = _db.Posts.AsNoTracking().Include(e => e.Author).Where(p => p.Published > DateTime.MinValue && p.UserId == user.ToString()).ToList();
 
             foreach (var item in posts)
             {
@@ -136,7 +137,7 @@ namespace BlogDemo.Domain.Repositories
 
         public async Task<PostItem> GetItem(Expression<Func<Post, bool>> predicate)
         {
-            var post = _db.Posts.AsNoTracking().Single(predicate);
+            var post = _db.Posts.AsNoTracking().Include(e=>e.Author).Include(e=>e.Comments).ThenInclude(c=>c.User).Single(predicate);
             var item = _mapper.Map<PostItem>(post);
 
             item.Author.Avatar = string.IsNullOrEmpty(item.Author.Avatar) ? "lib/img/avatar.jpg" : item.Author.Avatar;
@@ -151,6 +152,8 @@ namespace BlogDemo.Domain.Repositories
             var all = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue)
                 .Include(e => e.Author)
+                .Include(e=>e.Comments)
+                .ThenInclude(c=>c.User)
                 .OrderByDescending(p => p.IsFeatured)
                 .ThenByDescending(p => p.Published).ToList();
 
@@ -219,6 +222,18 @@ namespace BlogDemo.Domain.Repositories
 
             await _db.SaveChangesAsync();
         } 
+        public async Task AddCommentToPost(int postId, string comment, string userId)
+        {
+            var cm = new Comment
+            {
+                PostId = postId,
+                UserId = userId,
+                Content = comment,
+                CreateDate = DateTime.Now
+            };
+            _db.Comments.Add(cm);
+            await _db.SaveChangesAsync();
+        }
     }
 
     internal class SearchResult

@@ -27,27 +27,18 @@
                     }
                 </div>
             </header>
+            <input type="hidden" id="postId" asp-for="Post.Id" />
             <div class="post-content">
                 @Html.Raw(Model.Post.Content)
             </div>
-            @if (Model.Post.Comments.Any())
-            {
-                foreach (var comment in Model.Post.Comments)
-                {
-                    <div>@Html.Raw(comment.Content)</div>
-                }
-            }
-            @if (User.Identity.IsAuthenticated)
-            {
-                <p>Leave a Reply</p>
-                <textarea id="text1" placeholder="Enter your comment here...." style="min-width: 100%" rows="5"></textarea>
-            }
-            else
-            {
-                <p>You are not Loged In, <a href="~/Account/Login">Login</a> to comment</p>
-            }
-
-
+            <hr />
+            <div id="comments" class="pt-5">
+                <h3>Comments</h3>
+                <partial name="_Comment" model="Model.Post.Comments" />
+            </div>
+            
+              
+           
             @if (Model.Older != null || Model.Newer != null)
             {
                 <ul class="pagination justify-content-center">

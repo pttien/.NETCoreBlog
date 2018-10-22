@@ -126,6 +126,15 @@ function getEditor() {
         styleSelectedText: false,
         syncSideBySidePreviewScroll: false
     });
+
+    var txt = $('#PostItem_Content').val();
+
+    simplemde.value(txt
+        .replace(/&#xA;/g, '\r\n')
+        .replace(/&#xD;/g, '')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"'));
     return simplemde;
 }
 

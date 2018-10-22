@@ -11,6 +11,7 @@ namespace BlogDemo.Domain.Data
         public string UserId { get; set; }
         public string Content { get; set; }
         public virtual Post Post { get; set; }
-        public virtual ApplicationUser User { get; set; }
+        public DateTime CreateDate { get; set; }
+        public  ApplicationUser User { get; set; }
     }
 }

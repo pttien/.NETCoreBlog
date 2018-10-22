@@ -1,0 +1,54 @@
+﻿@model List<Comment>
+@using Microsoft.AspNetCore.Http.Extensions
+@{
+    var returnUrl = Context.Request.Path;
+}
+@if (Model.Any())
+{
+    int i = 0;
+    foreach (var comment in Model)
+    {
+        i++;
+        var hightLight = i % 2 == 1 ? "" : "hight_light";
+        <div class="comment_item width_common @hightLight pt-3">
+            <p class="full_content">@Html.Raw(comment.Content)</p>
+            <div class="user_status width_common" data-user-type="5">
+                <span class="left txt_666 txt_14">
+                    <a class="nickname txt_666 hover">
+                        <b>@comment.User.UserName </b>
+                    </a>
+                    @comment.CreateDate.ToFriendlyDateTimeString()
+                </span>
+            </div>
+        </div>
+    }
+}
+@if (User.Identity.IsAuthenticated)
+{
+
+    <div class="pt-5">
+        <h4>Leave a Reply</h4>
+        <textarea id="text1" placeholder="Enter your comment here...." style="min-width: 100%" rows="5"></textarea>
+        <button type="button" id="addComment" class="btn btn-lg btn-primary btn-block">Post Comment</button>
+    </div>
+
+}
+else
+{
+
+    <p>You are not Loged In, <a href="~/Account/Login?returnUrl=@returnUrl">Login</a> to comment</p>
+}
+
+<script>
+        var webRoot = '@Url.Content("~/")';
+        function getUrl(str) {
+            return webRoot + str;
+        }
+</script>
+<script src="~/admin/js/lib/jquery.min.js"></script>
+<script src="~/admin/js/lib/toastr.min.js"></script>
+<script src="~/admin/js/lib/popper.min.js"></script>
+<script src="~/admin/js/lib/bootstrap.min.js"></script>
+<script src="~/admin/js/app/app.js"></script>
+<script src="~/admin/js/app/dataService.js"></script>
+<script src="~/admin/js/app/postsController.js"></script>

@@ -7,6 +7,7 @@ using BlogDemo.Domain.Data;
 using BlogDemo.Domain.Helpers;
 using BlogDemo.Domain.Models;
 using Markdig;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -19,11 +20,13 @@ namespace BlogDemo.Web.Controllers
         SignInManager<ApplicationUser> _sm;
         private readonly ICompositeViewEngine _viewEngine;
         public IConfiguration Configuration { get; }
-        public PostController(IDataService db, SignInManager<ApplicationUser> sm, ICompositeViewEngine viewEngine)
+        private UserManager<ApplicationUser> _userManager;
+        public PostController(IDataService db, SignInManager<ApplicationUser> sm, ICompositeViewEngine viewEngine, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _sm = sm;
             _viewEngine = viewEngine;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(int page = 1, string term = "")
@@ -78,7 +81,7 @@ namespace BlogDemo.Web.Controllers
 
                 return View(model);
             }
-            catch
+            catch(Exception e)
             {
                 return Redirect("~/error/404");
             }
@@ -140,6 +143,17 @@ namespace BlogDemo.Web.Controllers
             var viewName = $"~/Views/Error.cshtml";
             var result = _viewEngine.GetView("", viewName, false);
             return View(viewName, code);
+        }
+
+        [Authorize]
+        [Route("post/addcomment/{postId}/{comment}")]
+        public async Task<IActionResult> AddComment(int postId, string comment)
+        {
+            var currentUserId = _userManager.GetUserId(User);
+            await  _db.Posts.AddCommentToPost(postId, comment, currentUserId);
+            var model = await _db.Posts.GetItem(e => e.Id == postId);
+
+            return PartialView("_Comment", model.Comments);
         }
     }
 }
