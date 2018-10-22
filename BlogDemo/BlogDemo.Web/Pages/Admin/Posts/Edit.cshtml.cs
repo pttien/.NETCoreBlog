@@ -2,12 +2,14 @@
 using BlogDemo.Domain.Data;
 using BlogDemo.Domain.Models;
 using BlogDemo.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace BlogDemo.Web.Pages.Admin.Posts
 {
+    [Authorize]
     public class EditModel : AdminPageModel
     {
         [BindProperty]

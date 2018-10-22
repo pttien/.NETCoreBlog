@@ -19,7 +19,7 @@ namespace BlogDemo.Domain.Data
                 Email = "admin@us.com",
                 DisplayName = "Administrator",
                 Avatar = "data/admin/avatar.png",
-                Bio = "<p>Something about <b>administrator</b>, maybe HTML or markdown formatted text goes here.</p><p>Should be customizable and editable from user profile.</p>",
+                Bio = "<p>Something about <b>administrator</b></p>",
                 IsAdmin = true,
                 Created = DateTime.UtcNow.AddDays(-120)
             });
@@ -39,8 +39,8 @@ namespace BlogDemo.Domain.Data
 
             context.Posts.Add(new Post
             {
-                Title = "Welcome to Blogifier!",
-                Slug = "welcome-to-blogifier!",
+                Title = "How to get started learning Sitecore",
+                Slug = "How-to-get-started-learning-Sitecore",
                 Description = SeedData.FeaturedDesc,
                 Content = SeedData.PostWhatIs,
                 Categories = "welcome,blog",
@@ -54,13 +54,13 @@ namespace BlogDemo.Domain.Data
 
             context.Posts.Add(new Post
             {
-                Title = "Blogifier Features",
-                Slug = "blogifier-features",
-                Description = "List of the main features supported by Blogifier, includes user management, content management, plugin system, markdown editor, simple search and others. This is not the full list and work in progress.",
+                Title = "How to inject the SqlShell admin tool to Sitecore 7",
+                Slug = "How-to-inject-the-SqlShell-admin-tool-to-Sitecore-7",
+                Description = "Sometimes, we want to execute the SQL script to get insight into the current status of our Sitecore instance. It will be easy peasy lemon squeezy if you can access the server database.",
                 Content = SeedData.PostFeatures,
                 Categories = "blog",
                 AuthorId = adminId,
-                Cover = "data/admin/cover-globe.png",
+                Cover = "data/admin/ss_7.jpeg",
                 PostViews = 15,
                 Rating = 4.0,
                 Published = DateTime.UtcNow.AddDays(-55)
@@ -87,55 +87,99 @@ namespace BlogDemo.Domain.Data
 
     public class SeedData
     {
-        public static readonly string FeaturedDesc = @"Blogifier is simple, beautiful, light-weight open source blog written in .NET Core. This cross-platform, highly extendable and customizable web application brings all the best blogging features in small, portable package.
+        public static readonly string FeaturedDesc = @"Personally, I’d like to summarize the highlight Sitecore learning resources for myself and for everyone. I’m so happy that the Sitecore community is awesome and there are many helpful Sitecore stuffs are kept created daily.";
 
-#### To login:
-* User: demo
-* Pswd: Demo@pass1";
+        public static readonly string PostWhatIs = @"Personally, I’d like to summarize the highlight Sitecore learning resources for myself and for everyone. I’m so happy that the Sitecore community is awesome and there are many helpful Sitecore stuffs are kept created daily.
 
-        public static readonly string PostWhatIs = @"## What is Blogifier
+    ![file-mgr.png](/data/admin/ls_1.jpg)
+    Sitecore Knowledge Base
+    Sitecore Experience Platform (XP): https://sitecore.stackexchange.com/questions/1737/how-can-i-get-started-learning-sitecore great Q&A on Sitecore Stack Exchange by Sitecore MVP Mark Cassidy
+    Note 1: Sitecore XP 9 step-by-step install guide on your machine
+    version 9.0.0
+    version 9.0.1
+    version 9.0.2
+    Note 2: how to reduce your Sitecore recycle time after a build on your machine
+    version 9: by Nick Wisselman
+    version 8: by Kam Figy
+    Note 3: powerful Sitecore Tools and Modules to make your life easier by Amitabh Vyas 
+    Sitecore Experience Commerce (XC): https://sitecore.stackexchange.com/questions/12771/how-to-start-development-with-sitecore-commerce-9-sitecore-commerce-9-learning great Q&A on Sitecore Stack Exchange by Peter Prochazka
+    Note: Sitecore XC 9 step-by-step install guide on your machine
+    version 9.0.0
+    version 9.0.1
+    version 9.0.2
 
-Blogifier is simple, beautiful, light-weight open source blog written in .NET Core. This cross-platform, highly extendable and customizable web application brings all the best blogging features in small, portable package.
+Sitecore References
+Highly recommend everyone to set the following Sitecore demo(s) up on your own machine so that we can have a chance to learn something for our own implementation:
+![file-mgr.png](/data/admin/ls_4.jpg)
 
-## System Requirements
+Habitat: it is an example Sitecore solution built on the Helix architecture principles. It is designed to show how a Helix-based solution can be architected, and to demonstrate how tooling can be used to accomplish publishing, serialization, and testing. Habitat is not intended to be a starter solution, or as a recommendation of tools for your solutions
+GitHub: https://github.com/Sitecore/Habitat/
+Live site: N/A
+Install guide: https://github.com/Sitecore/Habitat/wiki/01-Getting-Started
+Habitat Home: HabitatHome Demo and the tools and processes in it is a Sitecore® solution example built using Sitecore Experience Accelerator™ (SXA) on Sitecore Experience Platform™ (XP) following the Helix architecture principles
+GitHub: https://github.com/Sitecore/Sitecore.HabitatHome.Content
+Live site: https://experienceplatform.habitathomedemo.com/
+Step-by-step install guide on your machine:
+Sitecore XP 9.0.2 and SXA 1.7.1
+Sitecore XP 9.0.1 and SXA 1.6.0
+Habitat Home Commerce: HabitatHome Commerce Demo and the tools and processes in it is a Sitecore® solution example built using Sitecore Experience Accelerator™ (SXA) on Sitecore Experience Platform™ (XP) and Sitecore Experience Commerce™ (XC) following the Helix architecture principles
+GitHub: https://github.com/Sitecore/Sitecore.HabitatHome.Commerce
+Live site: https://experiencecommerce.habitathomedemo.com/
+Step-by-step install guide on your machine:
+Sitecore XC 9.0.2
+Sitecore XC 9.0.1
 
-* Windows, Mac or Linux
-* ASP.NET Core 2.1
-* Visual Studio 2017, VS Code or other code editor (Atom, Sublime etc)
-* SQLite by default, MS SQL Server tested, EF compatible databases should work
 
-## Getting Started
+Sitecore Community Networks
+There are many experienced Sitecore developers around the world and they’re willing to help you out (just a friendly reminder: playing around with our best friend Google so that you would have a good question / query before reaching them).
 
-1. Clone or download source code
-2. Run application in Visual Studio or using your code editor
-3. Use admin/Admin@pass1 to log in as admininstrator
-4. Use demo/Demo@pass1 to log in as user
+![file-mgr.png](/data/admin/ls_2.jpg)
 
-## Demo site
+Sitecore Slack (please submit the registration form)
+Note: excellent Sitecore Slack Community Guidelines & Help by Sitecore MVP Kamruz Jaman
+Sitecore Stack Exchange
+Sitecore Community
+Sitecore Linkedin Group
+Sitecore Facebook Group
+Happy Sitecore Learning!
+";
 
-The [demo site](http://blogifier.azurewebsites.net) is a playground to check out Blogifier features. You can write and publish posts, upload files and test application before install. And no worries, it is just a sandbox and will clean itself.
+        public static readonly string PostFeatures = @"Sometimes, we want to execute the SQL script to get insight into the current status of our Sitecore instance. It will be easy peasy lemon squeezy if you can access the server database.
 
-![Demo-1.png](/data/admin/admin-editor.png)";
+![file-mgr.png](/data/admin/ss_6.jpeg)
+Another way is to play around with SqlShell admin tool if you’re Sitecore admin + your Sitecore instance version is 8.1 Update 2 or later.
 
-        public static readonly string PostFeatures = @"### User Management
-Blogifier is multi-user application with simple admin/user roles, allowing every user write and publish posts and administrator create new users.
+Our one is 7.2.0 and the Gatekeeper does NOT allow to access the database server. We have to go through the back-and-forth process to get the SQL query result so it takes quite much time and effort to do that.
 
-### Content Management
-Built-in file manager allows upload images and files and use them as links in the post editor.
+Personally, I wanted to clear the obstacle above by injecting the admin tool SqlShell into our Sitecore 7 instance. It’s a tricky way so you should use it at your own risk 😀
 
-![file-mgr.png](/data/admin/admin-files.png)
+![file-mgr.png](/data/admin/ss_7.jpeg)
 
-### Plugin System
-Blogifier built as highly extendable application allowing themes, widgets and modules to be side-loaded and added to blog at runtime.
+How did I do that?
+install a fresh Sitecore 8.1.2 instance so that I have a good chance to avoid compatibility issue of the latest versions
+Note: should use SIM to install it very easily and quickly
+ensure to enable SqlShell admin tool
+create a Sitecore package so that I will be able to install it to Sitecore 7 later
+Note 1: SqlShell is referring to Sitecore.ExperienceContentManagement.Administration.dll so we need to package that file as well
+![file-mgr.png](/data/admin/ss_1.png)
+![file-mgr.png](/data/admin/ss_2.png)
 
-### Markdown Editor
-The post editor uses markdown syntax, which many writers prefer over HTML for its simplicity.
+Note 2: you can download SqlShell_AdminTool812_InstallationWizard.zip if you’re so lazy like me 😀
+install a fresh Sitecore 7.2.0 instance
+Note: should use SIM to install it very easily and quickly
+(optional) install SqlShell_AdminTool812_InstallationWizard.zip to Sitecore 7 instance via Installation Wizard
+(optional) assume that the Gatekeeper does NOT allow to install Sitecore package so I need to download SqlShell_AdminTool812_FileExplorer.zip and then upload it to 
+![file-mgr.png](/data/admin/dbi_6.png)
 
-### Simple Search
-There is simple but quick and functional search in the post lists, as well as search in the image/file list in the file manager.
+ensure to select Website folder in the content tree and then click Upload button to upload SqlShell_AdminTool812_FileExplorer.zip
 
-### Features in the work
-* Plugin management";
+![file-mgr.png](/data/admin/ss_4.png)
+
+after clicking Next button, I would see the following dialog, ensure to check Unpack ZIP files on the server checkbox  and then click Upload > button to complete
+![file-mgr.png](/data/admin/ss_5.png)
+
+
+";
 
         public static readonly string PostDemo = @"This demo site is a sandbox to test Blogifier features. It runs in-memory and does not save any data, so you can try everything without making any mess. Have fun!
 

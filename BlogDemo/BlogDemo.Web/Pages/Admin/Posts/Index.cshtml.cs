@@ -3,6 +3,7 @@ using BlogDemo.Domain.Data;
 using BlogDemo.Domain.Helpers;
 using BlogDemo.Domain.Models;
 using BlogDemo.Web.Pages.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace BlogDemo.Web.Pages.Admin.Posts
 {
+    [Authorize]
     public class IndexModel : AdminPageModel
     {
         [BindProperty]
