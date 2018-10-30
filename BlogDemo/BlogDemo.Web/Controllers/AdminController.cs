@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogDemo.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Author")]
     public class AdminController : Controller
     {
         IDataService _db;

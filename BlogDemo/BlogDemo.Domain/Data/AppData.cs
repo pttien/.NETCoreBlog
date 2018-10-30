@@ -26,7 +26,7 @@ namespace BlogDemo.Domain.Data
 
             context.Authors.Add(new Author
             {
-                AppUserName = "member",
+                AppUserName = "author",
                 Email = "member@us.com",
                 DisplayName = "Demo user",
                 Bio = "Short description about this user and blog.",
@@ -36,7 +36,7 @@ namespace BlogDemo.Domain.Data
 
             context.SaveChanges();
             var adminId = context.Authors.Single(a => a.AppUserName == "admin").Id;
-            var demoId = context.Authors.Single(a => a.AppUserName == "member").Id;
+            var demoId = context.Authors.Single(a => a.AppUserName == "author").Id;
 
             context.Posts.Add(new Post
             {

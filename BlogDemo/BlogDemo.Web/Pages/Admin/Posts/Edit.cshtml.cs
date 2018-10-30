@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogDemo.Web.Pages.Admin.Posts
 {
-    [Authorize]
+    [Authorize(Roles = "Admin,Author")]
     public class EditModel : AdminPageModel
     {
         [BindProperty]

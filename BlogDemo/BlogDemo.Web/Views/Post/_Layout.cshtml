@@ -26,7 +26,7 @@
             <a href="~/" class="blog-logo my-auto d-flex">
                 <img src="~/images/logo.png" alt="Home" class="my-auto" />
            </a>
-            <div class="ml-auto pt-3">
+            <div class="ml-auto pt-3 login">
                 @if (User.Identity.IsAuthenticated)
                 {
                     var author = await dataService.Authors.GetItem(e => e.AppUserName == User.Identity.Name);

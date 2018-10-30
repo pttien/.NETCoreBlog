@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Blogdemo.Services;
 using BlogDemo.Domain.Data;
 using Microsoft.AspNetCore;
@@ -29,10 +30,24 @@ namespace BlogDemo.Web
                 catch { }
 
                 var userMgr = (UserManager<ApplicationUser>)services.GetRequiredService(typeof(UserManager<ApplicationUser>));
+                
                 if (!userMgr.Users.Any())
                 {
-                    userMgr.CreateAsync(new ApplicationUser { UserName = "admin", Email = "admin@us.com" }, "Admin@pass1");
-                    userMgr.CreateAsync(new ApplicationUser { UserName = "member", Email = "demo@us.com" }, "Demo@pass1");
+                    string[] roleNames = { "Admin", "Author", "Member" };
+                    var RoleManager = (RoleManager<IdentityRole>)services.GetRequiredService(typeof(RoleManager<IdentityRole>));
+
+                    foreach (var roleName in roleNames)
+                    {       //create the roles and seed them to the database: Question 1
+                        RoleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+
+                    var admin = new ApplicationUser { UserName = "admin", Email = "admin@us.com" };
+                        userMgr.CreateAsync(admin, "Admin@pass1");
+                    userMgr.AddToRolesAsync(admin, roleNames);
+
+                    var author = new ApplicationUser { UserName = "author", Email = "demo@us.com" };
+                    userMgr.CreateAsync(author, "Author@pass1");
+                    userMgr.AddToRolesAsync(author, new List<string> { "Author", "Member" });
                 }
 
                 if (!context.Posts.Any())

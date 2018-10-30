@@ -56,6 +56,10 @@ body {
 .comment_item.hight_light {
     background: #cbbaba;
 }
+.login {
+    background-color: azure;
+    border-radius: 50%;
+}
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

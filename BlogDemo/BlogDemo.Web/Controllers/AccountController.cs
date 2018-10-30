@@ -63,7 +63,7 @@ namespace BlogDemo.Web.Controllers
                 }
                 else
                 {
-                    var author = await dataService.Authors.GetItem(e => e.AppUserName == model.UserName);
+                    var author = await dataService.Authors.GetItem(e => e.AppUserName.ToLower() == model.UserName.ToLower());
                     if (author != null)
                     {
 
@@ -118,6 +118,10 @@ namespace BlogDemo.Web.Controllers
             };
 
             var result = await this.userManager.CreateAsync(user, model.Password);
+            if(result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, "Member");
+            }
             if (result.Succeeded)
             {
                 return Redirect("~/Account/login");
