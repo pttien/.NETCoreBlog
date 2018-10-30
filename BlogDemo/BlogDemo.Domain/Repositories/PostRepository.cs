@@ -63,6 +63,7 @@ namespace BlogDemo.Domain.Repositories
 
             var posts = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue)
+                .Include(e => e.Author)
                 .OrderByDescending(p => p.Published).ToList();
 
             var items = new List<Post>();

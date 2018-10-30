@@ -71,7 +71,7 @@ namespace BlogDemo.Domain.Data
             {
                 Title = "Fabletics x Girl Up Meet the Girl Up leaders from Fabletics new collection!",
                 Slug = "fabletics-x-girl-up-meet-the-girl-up-leaders-from-fabletics-new-collection",
-                Description = "This demo site is a sandbox to test Blogifier features. It runs in-memory and does not save any data, so you can try everything without making any mess. Have fun!",
+                Description = "Fabletics’ new #GirlAlmighty capsule collection benefiting Girl Up,  is inspired by Kate Hudson’s vision for Fabletics to be a fashion-focused activewear brand with the mission to empower women by making a healthy, active lifestyle accessible to everyone. The new collection inspires girls and women to stand up and celebrate each other regardless of size, shape, age or ability.",
                 Content = SeedData.PostDemo,
                 AuthorId = demoId,
                 Cover = "data/member/2018/10/Fabletics-2-Sized.png",

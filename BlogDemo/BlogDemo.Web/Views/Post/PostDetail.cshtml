@@ -32,13 +32,13 @@
                 @Html.Raw(Model.Post.Content)
             </div>
             <hr />
+            <h3>Comments</h3>
             <div id="comments" class="pt-5">
-                <h3>Comments</h3>
                 <partial name="_Comment" model="Model.Post.Comments" />
             </div>
-            
-              
-           
+
+
+
             @if (Model.Older != null || Model.Newer != null)
             {
                 <ul class="pagination justify-content-center">
