@@ -3,23 +3,20 @@ using System;
 using BlogDemo.Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlogDemo.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181016041428_addCategories")]
-    partial class addCategories
+    [Migration("20181025082514_createdatabase")]
+    partial class createdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
             modelBuilder.Entity("BlogDemo.Domain.Data.ApplicationUser", b =>
                 {
@@ -66,8 +63,7 @@ namespace BlogDemo.Web.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -75,8 +71,7 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("BlogDemo.Domain.Data.Author", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("AppUserId")
                         .HasMaxLength(160);
@@ -107,8 +102,7 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("BlogDemo.Domain.Data.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
@@ -120,16 +114,13 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("BlogDemo.Domain.Data.Comment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content");
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<int>("PostId");
-
-                    b.Property<DateTime>("UpdatedDate");
 
                     b.Property<string>("UserId");
 
@@ -145,8 +136,7 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("BlogDemo.Domain.Data.Post", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("AuthorId");
 
@@ -182,6 +172,8 @@ namespace BlogDemo.Web.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
@@ -205,8 +197,7 @@ namespace BlogDemo.Web.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -214,8 +205,7 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -234,8 +224,7 @@ namespace BlogDemo.Web.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -311,6 +300,11 @@ namespace BlogDemo.Web.Migrations
 
             modelBuilder.Entity("BlogDemo.Domain.Data.Post", b =>
                 {
+                    b.HasOne("BlogDemo.Domain.Data.Author", "Author")
+                        .WithMany("Posts")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("BlogDemo.Domain.Data.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");

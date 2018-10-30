@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlogDemo.Web.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class createdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,11 +47,44 @@ namespace BlogDemo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AppUserId = table.Column<string>(maxLength: 160, nullable: true),
+                    AppUserName = table.Column<string>(maxLength: 160, nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(maxLength: 160, nullable: false),
+                    Bio = table.Column<string>(nullable: true),
+                    Avatar = table.Column<string>(maxLength: 160, nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -73,7 +105,7 @@ namespace BlogDemo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -154,48 +186,31 @@ namespace BlogDemo.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PostCategories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PostCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PostCategories_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PostCategoryId = table.Column<int>(nullable: false),
+                        .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<string>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: false)
+                    AuthorId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(maxLength: 160, nullable: false),
+                    Slug = table.Column<string>(maxLength: 160, nullable: false),
+                    Description = table.Column<string>(maxLength: 450, nullable: false),
+                    Content = table.Column<string>(nullable: false),
+                    Categories = table.Column<string>(nullable: true),
+                    Cover = table.Column<string>(maxLength: 255, nullable: true),
+                    PostViews = table.Column<int>(nullable: false),
+                    Rating = table.Column<double>(nullable: false),
+                    IsFeatured = table.Column<bool>(nullable: false),
+                    Published = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_PostCategories_PostCategoryId",
-                        column: x => x.PostCategoryId,
-                        principalTable: "PostCategories",
+                        name: "FK_Posts_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -211,12 +226,11 @@ namespace BlogDemo.Web.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     PostId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UpdatedDate = table.Column<DateTime>(nullable: false)
+                    CreateDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,8 +258,7 @@ namespace BlogDemo.Web.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -271,8 +284,7 @@ namespace BlogDemo.Web.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
@@ -285,14 +297,9 @@ namespace BlogDemo.Web.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostCategories_UserId",
-                table: "PostCategories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_PostCategoryId",
+                name: "IX_Posts_AuthorId",
                 table: "Posts",
-                column: "PostCategoryId");
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
@@ -318,6 +325,9 @@ namespace BlogDemo.Web.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
@@ -327,7 +337,7 @@ namespace BlogDemo.Web.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "PostCategories");
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
