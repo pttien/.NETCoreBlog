@@ -140,7 +140,7 @@ namespace BlogDemo.Web.Controllers
         [Route("error/{code:int}")]
         public IActionResult Error(int code)
         {
-            var viewName = $"~/Views/Error.cshtml";
+            var viewName = $"~/Views/_Error.cshtml";
             var result = _viewEngine.GetView("", viewName, false);
             return View(viewName, code);
         }
