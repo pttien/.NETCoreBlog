@@ -81,7 +81,7 @@ namespace BlogDemo.Web.Controllers
 
                 return View(model);
             }
-            catch(Exception e)
+            catch
             {
                 return Redirect("~/error/404");
             }
