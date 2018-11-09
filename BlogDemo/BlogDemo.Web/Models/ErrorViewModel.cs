@@ -1,5 +1,3 @@
-using System;
-
 namespace BlogDemo.Web.Models
 {
     public class ErrorViewModel

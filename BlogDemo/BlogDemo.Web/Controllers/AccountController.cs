@@ -27,7 +27,7 @@ namespace BlogDemo.Web.Controllers
             this.dataService = dataService;
             this.userManager = userManager;
             this.signInManager = signInManager;
-         
+
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace BlogDemo.Web.Controllers
 
         public IActionResult Login()
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 return Redirect("/");
             }
@@ -46,17 +46,17 @@ namespace BlogDemo.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, [FromQuery] string returnUrl="")
+        public async Task<IActionResult> Login(LoginViewModel model, [FromQuery] string returnUrl = "")
         {
             if (!ModelState.IsValid)
                 return View(model);
-            
+
             var result = await this.signInManager.PasswordSignInAsync(
                 model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-               
+
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Redirect(returnUrl);
@@ -74,10 +74,10 @@ namespace BlogDemo.Web.Controllers
                         ViewData["IsAuthor"] = "false";
                         return Redirect("/");
                     }
-                }                
-                    
+                }
+
             }
-             
+
 
             ModelState.AddModelError(string.Empty, "Login Failed");
             return View(model);
@@ -114,11 +114,11 @@ namespace BlogDemo.Web.Controllers
             var user = new ApplicationUser
             {
                 UserName = model.UserName,
-                Email = model.Email              
+                Email = model.Email
             };
 
             var result = await this.userManager.CreateAsync(user, model.Password);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(user, "Member");
             }

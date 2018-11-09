@@ -6,7 +6,7 @@ namespace BlogDemo.Web.Pages.Admin
 {
     public class AdminPageModel : PageModel
     {
-        public bool IsAdmin { get; set; }        
+        public bool IsAdmin { get; set; }
 
         [TempData]
         public string Message { get; set; }

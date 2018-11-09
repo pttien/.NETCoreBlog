@@ -18,13 +18,13 @@ namespace BlogDemo.Web.Controllers
     {
         IDataService _db;
         IStorageService _ss;
-        UserManager<ApplicationUser> _um;       
+        UserManager<ApplicationUser> _um;
 
-        public AdminController(IDataService db,  IStorageService ss, UserManager<ApplicationUser> um)
+        public AdminController(IDataService db, IStorageService ss, UserManager<ApplicationUser> um)
         {
-            _db = db;           
+            _db = db;
             _um = um;
-            _ss = ss;          
+            _ss = ss;
         }
 
         public IActionResult Index()
@@ -122,7 +122,7 @@ namespace BlogDemo.Web.Controllers
             if (type == "postCover")
             {
                 await _db.Posts.SaveCover(int.Parse(post), asset);
-            }          
+            }
             else if (type == "avatar")
             {
                 var user = _db.Authors.Single(a => a.AppUserName == User.Identity.Name);

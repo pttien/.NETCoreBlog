@@ -7,12 +7,12 @@ namespace BlogDemo.Domain.Helpers
 {
     public class Pager
     {
-      
+
         public Pager(int currentPage, int itemsPerPage = 0)
         {
             CurrentPage = currentPage;
             ItemsPerPage = itemsPerPage;
-           
+
             if (ItemsPerPage == 0)
                 ItemsPerPage = 10;
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace BlogDemo.Extensions.TagHelpers
 {
     [HtmlTargetElement("requiredlabel", Attributes = ForAttributeName)]
-    public class RequiredLabelTagHelper: TagHelper
+    public class RequiredLabelTagHelper : TagHelper
     {
         private const string ForAttributeName = "asp-for";
 
@@ -72,7 +72,7 @@ namespace BlogDemo.Extensions.TagHelpers
                 }
             }
 
-            output.TagName = tagBuilder.TagName;           
+            output.TagName = tagBuilder.TagName;
             output.Content.SetHtmlContent(tagBuilder.InnerHtml);
         }
     }

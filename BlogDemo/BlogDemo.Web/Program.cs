@@ -20,17 +20,9 @@ namespace BlogDemo.Web
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                try
-                {
-                    if (context.Database.GetPendingMigrations().Any())
-                    {
-                        context.Database.Migrate();
-                    }
-                }
-                catch { }
 
                 var userMgr = (UserManager<ApplicationUser>)services.GetRequiredService(typeof(UserManager<ApplicationUser>));
-                
+
                 if (!userMgr.Users.Any())
                 {
                     string[] roleNames = { "Admin", "Author", "Member" };
@@ -42,7 +34,7 @@ namespace BlogDemo.Web
                     }
 
                     var admin = new ApplicationUser { UserName = "admin", Email = "admin@us.com" };
-                        userMgr.CreateAsync(admin, "Admin@pass1");
+                    userMgr.CreateAsync(admin, "Admin@pass1");
                     userMgr.AddToRolesAsync(admin, roleNames);
 
                     var author = new ApplicationUser { UserName = "author", Email = "demo@us.com" };

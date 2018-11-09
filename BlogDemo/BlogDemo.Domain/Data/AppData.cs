@@ -77,11 +77,11 @@ namespace BlogDemo.Domain.Data
                 Cover = "data/member/2018/10/Fabletics-2-Sized.png",
                 PostViews = 25,
                 Rating = 3.5,
-                Categories="Girl",
+                Categories = "Girl",
                 Published = DateTime.UtcNow.AddDays(-10)
             });
 
-          
+
 
             context.SaveChanges();
         }

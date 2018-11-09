@@ -17,7 +17,7 @@ namespace Blogdemo.Services
     public interface IStorageService
     {
         string Location { get; }
-        
+
         void CreateFolder(string path);
         void DeleteFolder(string path);
         void DeleteAuthor(string name);
@@ -46,7 +46,7 @@ namespace Blogdemo.Services
 
         public StorageService(IHttpContextAccessor httpContext, ILogger<StorageService> logger, IHostingEnvironment hostingEnvironment)
         {
-            if(httpContext == null || httpContext.HttpContext == null)
+            if (httpContext == null || httpContext.HttpContext == null)
             {
                 _blogSlug = "";
             }
@@ -54,7 +54,7 @@ namespace Blogdemo.Services
             {
                 _blogSlug = httpContext.HttpContext.User.Identity.Name;
             }
-            
+
             _httpContext = httpContext;
             _logger = logger;
             _hostingEnvironment = hostingEnvironment;
@@ -66,7 +66,7 @@ namespace Blogdemo.Services
         {
             get
             {
-                var path =  GetAppRoot();
+                var path = GetAppRoot();
 
                 path = Path.Combine(path, _uploadFolder.Replace("/", Path.DirectorySeparatorChar.ToString()));
 
@@ -89,7 +89,7 @@ namespace Blogdemo.Services
                 FileInfo[] files = info.GetFiles("*", SearchOption.AllDirectories)
                     .OrderByDescending(p => p.CreationTime).ToArray();
 
-                if(files != null && files.Any())
+                if (files != null && files.Any())
                 {
                     var assets = new List<string>();
 
@@ -390,7 +390,8 @@ namespace Blogdemo.Services
                 // Azure puts web sites under "wwwroot" folder
                 var path = asset.Replace($"wwwroot{_separator}wwwroot", "wwwroot", StringComparison.OrdinalIgnoreCase);
 
-                items.Add(new AssetItem {
+                items.Add(new AssetItem
+                {
                     Path = asset,
                     Url = pathToUrl(path),
                     Title = pathToTitle(path),
@@ -411,10 +412,10 @@ namespace Blogdemo.Services
         {
             var title = path;
 
-            if(title.LastIndexOf(_separator) > 0)
-                title = title.Substring(title.LastIndexOf(_separator));       
+            if (title.LastIndexOf(_separator) > 0)
+                title = title.Substring(title.LastIndexOf(_separator));
 
-            if(title.IndexOf('.') > 0)
+            if (title.IndexOf('.') > 0)
                 title = title.Substring(1, title.LastIndexOf('.') - 1);
 
             return title;
@@ -422,7 +423,7 @@ namespace Blogdemo.Services
 
         string pathToImage(string path)
         {
-            if(path.IsImagePath())
+            if (path.IsImagePath())
                 return pathToUrl(path);
 
             var ext = "blank.png";
@@ -449,7 +450,7 @@ namespace Blogdemo.Services
 
             // video/audio formats fro HTML5 tags
 
-            if (path.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase) 
+            if (path.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase)
                 || path.EndsWith(".webm", StringComparison.OrdinalIgnoreCase)
                 || path.EndsWith(".ogv", StringComparison.OrdinalIgnoreCase))
                 ext = "video.png";

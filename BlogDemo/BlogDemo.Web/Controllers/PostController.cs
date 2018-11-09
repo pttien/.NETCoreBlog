@@ -150,7 +150,7 @@ namespace BlogDemo.Web.Controllers
         public async Task<IActionResult> AddComment(int postId, string comment)
         {
             var currentUserId = _userManager.GetUserId(User);
-            await  _db.Posts.AddCommentToPost(postId, comment, currentUserId);
+            await _db.Posts.AddCommentToPost(postId, comment, currentUserId);
             var model = await _db.Posts.GetItem(e => e.Id == postId);
 
             return PartialView("_Comment", model.Comments);

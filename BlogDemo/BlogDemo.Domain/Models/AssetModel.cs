@@ -1,10 +1,7 @@
-﻿
-using BlogDemo.Domain.Helpers;
+﻿using BlogDemo.Domain.Helpers;
 using BlogDemo.Extensions;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BlogDemo.Domain.Models
 {

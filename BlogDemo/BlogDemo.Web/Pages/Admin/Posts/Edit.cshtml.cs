@@ -17,7 +17,7 @@ namespace BlogDemo.Web.Pages.Admin.Posts
 
         IDataService _db;
 
-        public EditModel(IDataService db )
+        public EditModel(IDataService db)
         {
             _db = db;
         }
@@ -34,26 +34,26 @@ namespace BlogDemo.Web.Pages.Admin.Posts
 
         public async Task<IActionResult> OnPostAsync()
         {
-            
+
 
             var user = await _db.Authors.GetItem(a => a.AppUserName == User.Identity.Name);
             IsAdmin = user.IsAdmin;
 
             PostItem.Author = user;
-            
 
-            if (ModelState.IsValid )
+
+            if (ModelState.IsValid)
             {
                 if (PostItem.Id > 0)
-                { 
-                    
+                {
+
                     var post = _db.Posts.Single(p => p.Id == PostItem.Id);
-                    if(post != null)
+                    if (post != null)
                     {
                         PostItem.Author = await _db.Authors.GetItem(a => a.Id == post.AuthorId);
                     }
                 }
-                
+
                 if (IsAdmin || _db.Authors.Single(a => a.Id == PostItem.Author.Id).AppUserName == User.Identity.Name)
                 {
                     if (PostItem.Status == SaveStatus.Publishing)
@@ -62,7 +62,7 @@ namespace BlogDemo.Web.Pages.Admin.Posts
                     if (PostItem.Status == SaveStatus.Unpublishing)
                         PostItem.Published = DateTime.MinValue;
 
-                    
+
                     if (PostItem.Published == DateTime.Parse("1/1/2001"))
                         PostItem.Published = DateTime.MinValue;
 

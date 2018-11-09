@@ -26,7 +26,7 @@ namespace BlogDemo.Web
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                    options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"),
-                   optionsBuilder=> optionsBuilder.MigrationsAssembly("BlogDemo.Web")),ServiceLifetime.Transient);
+                   optionsBuilder => optionsBuilder.MigrationsAssembly("BlogDemo.Web")), ServiceLifetime.Transient);
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                    .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -42,7 +42,7 @@ namespace BlogDemo.Web
 
                 options.Lockout.AllowedForNewUsers = true;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;               
+                options.Lockout.MaxFailedAccessAttempts = 5;
             });
 
             services.ConfigureApplicationCookie(options =>

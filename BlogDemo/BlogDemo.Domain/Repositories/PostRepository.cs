@@ -40,7 +40,7 @@ namespace BlogDemo.Domain.Repositories
 
             var drafts = _db.Posts.AsNoTracking()
                 .Where(p => p.Published == DateTime.MinValue).Where(predicate)
-                .Include(e=>e.Author)
+                .Include(e => e.Author)
                 .OrderByDescending(p => p.Published).ToList();
 
             var pubs = _db.Posts.AsNoTracking()
@@ -97,7 +97,7 @@ namespace BlogDemo.Domain.Repositories
 
             IEnumerable<Post> posts;
             if (user == 0)
-                posts = _db.Posts.AsNoTracking().Include(e=>e.Author).Where(p => p.Published > DateTime.MinValue).ToList();
+                posts = _db.Posts.AsNoTracking().Include(e => e.Author).Where(p => p.Published > DateTime.MinValue).ToList();
             else
                 posts = _db.Posts.AsNoTracking().Include(e => e.Author).Where(p => p.Published > DateTime.MinValue && p.UserId == user.ToString()).ToList();
 
@@ -138,7 +138,7 @@ namespace BlogDemo.Domain.Repositories
 
         public async Task<PostItem> GetItem(Expression<Func<Post, bool>> predicate)
         {
-            var post = _db.Posts.AsNoTracking().Include(e=>e.Author).Include(e=>e.Comments).ThenInclude(c=>c.User).Single(predicate);
+            var post = _db.Posts.AsNoTracking().Include(e => e.Author).Include(e => e.Comments).ThenInclude(c => c.User).Single(predicate);
             var item = _mapper.Map<PostItem>(post);
 
             item.Author.Avatar = string.IsNullOrEmpty(item.Author.Avatar) ? "lib/img/avatar.jpg" : item.Author.Avatar;
@@ -153,20 +153,20 @@ namespace BlogDemo.Domain.Repositories
             var all = _db.Posts.AsNoTracking()
                 .Where(p => p.Published > DateTime.MinValue)
                 .Include(e => e.Author)
-                .Include(e=>e.Comments)
-                .ThenInclude(c=>c.User)
+                .Include(e => e.Comments)
+                .ThenInclude(c => c.User)
                 .OrderByDescending(p => p.IsFeatured)
                 .ThenByDescending(p => p.Published).ToList();
 
-            if(all != null && all.Count > 0)
+            if (all != null && all.Count > 0)
             {
                 for (int i = 0; i < all.Count; i++)
                 {
-                    if(all[i].Slug == slug)
+                    if (all[i].Slug == slug)
                     {
                         model.Post = _mapper.Map<PostItem>(all[i]);
 
-                        if(i > 0)
+                        if (i > 0)
                         {
                             model.Newer = _mapper.Map<PostItem>(all[i - 1]);
                         }
@@ -188,7 +188,7 @@ namespace BlogDemo.Domain.Repositories
         {
             Post post;
 
-            if(item.Id == 0)
+            if (item.Id == 0)
             {
                 post = _mapper.Map<Post>(item);
                 _db.Posts.Add(post);
@@ -222,7 +222,7 @@ namespace BlogDemo.Domain.Repositories
             item.Cover = asset;
 
             await _db.SaveChangesAsync();
-        } 
+        }
         public async Task AddCommentToPost(int postId, string comment, string userId)
         {
             var cm = new Comment
